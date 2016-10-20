@@ -1,0 +1,26 @@
+{
+  "name": "exec-module",
+  "version": "1.0.0",
+  "description": "Executes a module safely.",
+  "main": "async.js",
+  "scripts": {
+    "test": "standard && tap test/*.js",
+    "quick": "tap test/*.js",
+    "lint": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinheidegger/exec-module.git"
+  },
+  "keywords": [],
+  "author": "Martin Heidegger <martin.heidegger@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinheidegger/exec-module/issues"
+  },
+  "homepage": "https://github.com/martinheidegger/exec-module#readme",
+  "devDependencies": {
+    "standard": "^8.4.0",
+    "tap": "^7.1.2"
+  }
+}

@@ -1,0 +1,1 @@
+throw String('custom error')
