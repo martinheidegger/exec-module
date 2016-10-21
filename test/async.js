@@ -75,7 +75,7 @@ test('Error while execution', function (t) {
 
 test('Error at callback', function (t) {
   execAsync(files.exec_async_error, function (err) {
-    t.equal(err.code, 'EEXEC')
+    t.equal(err.code, 'EEXECASYNC')
     t.equal(err.cause, 'exec error')
     t.done()
   })
@@ -124,12 +124,10 @@ test('Custom setup system handler method', function (t) {
 test('Error in setUp', function (t) {
   execAsync(files.exec_success, {
     setUp: function (file, opt, callback) {
-      console.log('ho')
-      throw new Error('hi')
+      throw String('custom error')
     }
   }, function (err, success) {
-    console.log('??')
-    t.equal(err.code, 'ESETUPUNHANDLED')
+    t.equal(err.code, 'ESETUPSYNC')
     t.equal(err.cause, 'custom error')
     t.done()
   })

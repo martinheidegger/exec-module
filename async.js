@@ -6,8 +6,6 @@ function asyncNoop () {
   setImmediate(arguments[arguments.length - 1])
 }
 
-
-
 function createErrorTemplate (file, code, message, cause) {
   var err
   if (cause && cause.code) {
@@ -46,19 +44,27 @@ module.exports = function execAsync (file, opt, callback) {
     code: 'ESETUP'
   }
   var handler = function (err) {
-    console.log('hi')
     cleanup(createError(state.code + 'UNHANDLED', 'Unhandled error occurred.', err))
   }
   var createError = createErrorTemplate.bind(null, file)
+  var lock = false
   var cleanup = function (err, data) {
+    if (lock) {
+      return
+    }
+    lock = true
     cleanup = noop
-    d.dispose()
 
     finalCleanup(opt, file, err, function (err2) {
       if (err2 && !err) {
         err = createError('ECLEANUP', 'Error while cleaning up.', err2)
       }
       callback(err, data)
+      try {
+        d.dispose()
+      } catch (e) {
+        // Smoking this error
+      }
     })
   }
   if (opt.timeout) {
@@ -75,35 +81,43 @@ module.exports = function execAsync (file, opt, callback) {
   d.run(function () {
     d.add(opt)
     d.add(state)
-    d.run(setUp, opt, file, function (err) {
-      if (err) {
-        return cleanup(createError(state.code, 'Error while setting up the module', err))
-      }
-      cleanup.initTimeout()
-      state.code = 'ELOAD'
-      try {
-        mod = require(file)
-      } catch (err) {
-        return cleanup(createError(state.code, 'Error while loading the module.', err))
-      }
-      if (typeof mod !== 'function') {
-        return cleanup(createError('ETYPE', 'Module doesn\'t return function.', err))
-      }
-      cleanup.initTimeout()
-      state.code = 'EEXEC'
-      d.run(exec, file, opt, mod, function (err, data) {
-        cleanup.cancelTimeout()
+    try {
+      d.run(setUp, opt, file, function (err) {
         if (err) {
-          err = createError(state.code, 'Error while executing module.', err)
+          return cleanup(createError(state.code + 'ASYNC', 'Error returned from setting up the module', err))
         }
-        state.code = 'ETEARDOWN'
-        d.run(tearDown, opt, file, err, function (err2) {
-          if (err2 && !err) {
-            err = createError(state.code, 'Error while tearing todwn the module.', err2)
+        cleanup.initTimeout()
+        state.code = 'ELOAD'
+        try {
+          mod = require(file)
+        } catch (err) {
+          return cleanup(createError(state.code, 'Error while loading the module.', err))
+        }
+        if (typeof mod !== 'function') {
+          return cleanup(createError('ETYPE', 'Module doesn\'t return function.', err))
+        }
+        cleanup.initTimeout()
+        state.code = 'EEXEC'
+        d.run(exec, file, opt, mod, function (err, data) {
+          cleanup.cancelTimeout()
+          if (err) {
+            err = createError(state.code + 'ASYNC', 'Error returned from the module.', err)
           }
-          cleanup(err, data)
+          state.code = 'ETEARDOWN'
+          try {
+            d.run(tearDown, opt, file, err, function (err2) {
+              if (err2 && !err) {
+                err = createError(state.code + 'ASYNC', 'Error returned from tearing down the module.', err2)
+              }
+              cleanup(err, data)
+            })
+          } catch (err) {
+            cleanup(createError(state.code + 'SYNC', 'Error thrown during tearDown of the module', err))
+          }
         })
       })
-    })
+    } catch (err) {
+      return cleanup(createError(state.code + 'SYNC', 'Error thrown during setup of the module', err))
+    }
   })
 }
