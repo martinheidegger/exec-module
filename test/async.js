@@ -35,6 +35,13 @@ test('Error due to file being an empty string', function (t) {
 
 test('Error due to file not existinng', function (t) {
   execModule(path.join(__dirname, 'async', 'doesnt_exist.js'), function (err) {
+    t.equal(err.code, 'ENOENT')
+    t.done()
+  })
+})
+
+test('Error due to file not existinng', function (t) {
+  execModule(path.join(__dirname, 'async'), function (err) {
     t.equal(err.code, 'ERR_STAT_NOFILE')
     t.done()
   })
