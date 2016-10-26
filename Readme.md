@@ -1,6 +1,7 @@
 # exec-module
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Build Status](https://travis-ci.org/martinheidegger/exec-module.svg?branch=master)](https://travis-ci.org/martinheidegger/exec-module)
+[![Coverage Status](https://coveralls.io/repos/github/martinheidegger/exec-module/badge.svg?branch=master)](https://coveralls.io/github/martinheidegger/exec-module?branch=master)
 
 > Run any module and know what happened
 
