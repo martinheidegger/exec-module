@@ -80,6 +80,7 @@ test('Error with a string module', function (t) {
 test('Error with a simple module', function (t) {
   execModule(files.empty_function, {timeout: 10}, function (err) {
     t.equal(err.code, 'ERR_RUN_TIMEOUT')
+    t.equal(err.timeout, 10)
     t.done()
   })
 })
