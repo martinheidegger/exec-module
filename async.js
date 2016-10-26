@@ -36,7 +36,7 @@ module.exports = function (file, opt, callback) {
     }
     fs.access(file, fs.constants.R_OK, function (accessErr) {
       if (accessErr) {
-        return callback(createErrorTemplate(file, 'CANT_READ', 'File is not readable', accessErr))
+        return callback(createErrorTemplate(file, 'EACCES', 'File is not readable', accessErr))
       }
       try {
         var mod = require(file)

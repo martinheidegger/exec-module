@@ -308,3 +308,13 @@ test('Next Error in setUp', function (t) {
     t.done()
   })
 })
+
+test('unreadable file', function (t) {
+  var stat = fs.statSync(files.cant_access)
+  fs.chmodSync(files.cant_access, 0)
+  execModule(files.cant_access, function (err, success) {
+    fs.chmodSync(files.cant_access, stat.mode)
+    t.equal(err.code, 'EACCES')
+    t.done()
+  })
+})
