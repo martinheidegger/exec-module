@@ -28,11 +28,11 @@ module.exports = function (file, opt, callback) {
   }
 
   fs.stat(file, function (statErr, stat) {
-    if ((statErr && statErr.code === 'ENOENT') || (stat && !stat.isFile())) {
-      return callback(createErrorTemplate(file, 'STAT_NOFILE', 'File does not exist'))
-    }
     if (statErr) {
       return callback(createErrorTemplate(file, 'STAT_ERR', 'Error while looking for stat of file', statErr))
+    }
+    if (stat && !stat.isFile()) {
+      return callback(createErrorTemplate(file, 'STAT_NOFILE', 'Path is not a file'))
     }
     try {
       var mod = require(file)
