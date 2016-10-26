@@ -34,7 +34,7 @@ module.exports = function (file, opt, callback) {
     if (stat && !stat.isFile()) {
       return callback(createErrorTemplate(file, 'STAT_NOFILE', 'Path is not a file'))
     }
-    fs.access(file, fs.constants.R_OK, function (accessErr) {
+    fs.access(file, fs.constants ? fs.constants.R_OK : fs.R_OK, function (accessErr) {
       if (accessErr) {
         return callback(createErrorTemplate(file, 'EACCES', 'File is not readable', accessErr))
       }
