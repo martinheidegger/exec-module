@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/martinheidegger/exec-module.git"
   },
-  "keywords": [],
+  "keywords": ["test", "testing", "execution", "annonymous", "error"],
   "author": "Martin Heidegger <martin.heidegger@gmail.com>",
   "license": "ISC",
   "bugs": {
@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/martinheidegger/exec-module#readme",
   "devDependencies": {
+    "after": "^0.8.2",
     "standard": "^8.4.0",
-    "tap": "^7.1.2"
+    "tap": "^8.0.0"
   }
 }
