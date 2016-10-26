@@ -18,7 +18,7 @@ module.exports = function (file, opt, callback) {
       name: 'tearDown',
       run: opt.tearDown,
       allowEmpty: true,
-      args: [opt, file, err, data],
+      args: [file, opt, err, data],
       file: file,
       then: function (err2) {
         callback(err || err2, data)
@@ -45,10 +45,10 @@ module.exports = function (file, opt, callback) {
     }
     execAsync({
       name: 'run',
-      run: opt.exec || function (opt, file, mod, callback) {
+        run: opt.exec || function (file, opt, mod, callback) {
         mod(callback)
       },
-      args: [opt, file, mod],
+        args: [file, opt, mod],
       file: file,
       timeout: opt.timeout,
       then: tearDown
@@ -59,8 +59,9 @@ module.exports = function (file, opt, callback) {
     name: 'setUp',
     run: opt.setUp,
     allowEmpty: true,
-    args: [opt, file],
+      args: [file, opt],
     file: file,
     then: run
+  })
   })
 }

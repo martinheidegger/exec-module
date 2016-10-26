@@ -109,8 +109,10 @@ test('Custom exec handler method', function (t) {
 
 test('Custom setup system handler method', function (t) {
   var calls = []
-  execModule(files.exec_success, {
+  var opts = {
     setUp: function (file, opt, callback) {
+      t.equal(file, files.exec_success)
+      t.equal(opt, opts)
       calls.push('setup')
       callback()
     },
@@ -118,7 +120,8 @@ test('Custom setup system handler method', function (t) {
       calls.push('exec')
       mod(callback)
     }
-  }, function (err, success) {
+  }
+  execModule(files.exec_success, opts, function (err, success) {
     t.equal(err, undefined)
     t.equal(success, 'success')
     t.deepEqual(calls, ['setup', 'exec'])
@@ -140,22 +143,49 @@ test('Async Error in setUp', function (t) {
 
 test('Custom teardown system handler method', function (t) {
   var calls = []
-  execModule(files.exec_success, {
+  var opts = {
     exec: function (file, opt, mod, callback) {
       calls.push('exec')
       mod(callback)
     },
     tearDown: function (file, opt, err, data, callback) {
+      t.equal(file, files.exec_success)
+      t.equal(opt, opts)
+      t.equal(err, null)
+      t.equal(data, 'success')
       calls.push('tearDown')
       callback()
     }
-  }, function (err, success) {
+  }
+  execModule(files.exec_success, opts, function (err, success) {
     t.equal(err, null)
     t.equal(success, 'success')
     t.deepEqual(calls, ['exec', 'tearDown'])
     t.done()
   })
 })
+
+test('Custom teardown called after error', function (t) {
+  var calls = []
+  execModule(files.exec_error, {
+    exec: function (file, opt, mod, callback) {
+      calls.push('exec')
+      mod(callback)
+    },
+    tearDown: function (file, opt, err, data, callback) {
+      t.equal(file, files.exec_error)
+      t.equal(err.code, 'ERR_RUN_UNHANDLED')
+      calls.push('tearDown')
+      callback()
+    }
+  }, function (err, data) {
+    t.equal(err.code, 'ERR_RUN_UNHANDLED')
+    t.equal(data, undefined)
+    t.deepEqual(calls, ['exec', 'tearDown'])
+    t.done()
+  })
+})
+
 test('Error in setUp', function (t) {
   execModule(files.exec_success, {
     setUp: function (file, opt, callback) {
