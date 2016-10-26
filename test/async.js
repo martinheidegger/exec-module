@@ -43,7 +43,10 @@ test('Error due to file not existinng', function (t) {
 test('Error with an empty module', function (t) {
   execModule(files.empty_module, {
     setUp: function () {
-      throw String('Setup may not be called')
+      t.fail('Setup may not be called')
+    },
+    tearDown: function () {
+      t.fail('Teardown may not be called')
     }
   }, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
@@ -55,7 +58,10 @@ test('Error with an empty module', function (t) {
 test('Error with a string module', function (t) {
   execModule(files.string, {
     setUp: function () {
-      throw String('Setup may not be called')
+      t.fail('Setup may not be called')
+    },
+    tearDown: function () {
+      t.fail('Teardown may not be called')
     }
   }, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
@@ -75,6 +81,9 @@ test('Error while initing module', function (t) {
   execModule(files.init_error, {
     setUp: function () {
       throw String('Setup may not be called')
+    },
+    tearDown: function () {
+      throw String('Teardown may not be called')
     }
   }, function (err) {
     t.equal(err.code, 'ERR_LOAD')
@@ -264,7 +273,13 @@ test('Error due to options as string', function (t) {
 
 test('Optional argument count', function (t) {
   execModule(files.exec_success, {
-    argCount: 2
+    argCount: 2,
+    setUp: function () {
+      t.fail('Setup may not be called')
+    },
+    tearDown: function () {
+      t.fail('Teardown may not be called')
+    }
   }, function (err, success) {
     t.equal(err.code, 'ERR_FUNCTION_ARG_WRONG')
     t.equal(err.expected, 2)
