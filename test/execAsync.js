@@ -1,3 +1,4 @@
+'use strict'
 var execAsync = require('../lib/execAsync.js')
 var test = require('tap').test
 
