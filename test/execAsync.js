@@ -26,7 +26,7 @@ test('simple err execution', function (t) {
     then: function (err, result) {
       t.equal(err.code, 'ERR_B_ASYNC')
       t.equal(err.cause, 'err')
-      t.equal(err.file, 'y')
+      t.equal(err.path, 'y')
       t.equal(result, undefined)
       t.done()
     }
@@ -43,7 +43,7 @@ test('immediate exception', function (t) {
     then: function (err, result) {
       t.equal(err.code, 'ERR_C_SYNC')
       t.equal(err.cause, 'err2')
-      t.equal(err.file, 'x')
+      t.equal(err.path, 'x')
       t.done()
     }
   })
@@ -61,7 +61,7 @@ test('delayed exception', function (t) {
     then: function (err, result) {
       t.equal(err.code, 'ERR_D_UNHANDLED')
       t.equal(err.cause, 'err3')
-      t.equal(err.file, 'w')
+      t.equal(err.path, 'w')
       t.done()
     }
   })
@@ -80,7 +80,7 @@ test('timeout exception', function (t) {
     then: function (err, result) {
       t.equal(err.code, 'ERR_E_TIMEOUT')
       t.equal(err.cause, undefined)
-      t.equal(err.file, 'v')
+      t.equal(err.path, 'v')
       t.equal(result, undefined)
       t.done()
     }
@@ -99,7 +99,7 @@ test('allow exception to contain a coded error', function (t) {
     then: function (err, result) {
       t.equal(err.message, 'Error while running f: Hello')
       t.equal(err.code, 'MY_ERR')
-      t.equal(err.file, 'u')
+      t.equal(err.path, 'u')
       t.done()
     }
   })

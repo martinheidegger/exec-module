@@ -35,7 +35,7 @@ test('Error due to file being an empty string', function (t) {
 test('Error with an empty module', function (t) {
   execModule(files.empty_module, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
-    t.equal(err.file, files.empty_module)
+    t.equal(err.path, files.empty_module)
     t.done()
   })
 })
@@ -43,7 +43,7 @@ test('Error with an empty module', function (t) {
 test('Error with a string module', function (t) {
   execModule(files.string, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
-    t.equal(err.file, files.string)
+    t.equal(err.path, files.string)
     t.done()
   })
 })
