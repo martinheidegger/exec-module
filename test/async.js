@@ -34,7 +34,11 @@ test('Error due to file being an empty string', function (t) {
 })
 
 test('Error with an empty module', function (t) {
-  execModule(files.empty_module, function (err) {
+  execModule(files.empty_module, {
+    setUp: function () {
+      throw String('Setup may not be called')
+    }
+  }, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
     t.equal(err.path, files.empty_module)
     t.done()
@@ -42,7 +46,11 @@ test('Error with an empty module', function (t) {
 })
 
 test('Error with a string module', function (t) {
-  execModule(files.string, function (err) {
+  execModule(files.string, {
+    setUp: function () {
+      throw String('Setup may not be called')
+    }
+  }, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
     t.equal(err.path, files.string)
     t.done()
@@ -57,7 +65,11 @@ test('Error with a simple module', function (t) {
 })
 
 test('Error while initing module', function (t) {
-  execModule(files.init_error, function (err) {
+  execModule(files.init_error, {
+    setUp: function () {
+      throw String('Setup may not be called')
+    }
+  }, function (err) {
     t.equal(err.code, 'ERR_LOAD')
     t.equal(err.cause, 'custom error')
     t.done()
