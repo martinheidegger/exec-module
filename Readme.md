@@ -123,7 +123,7 @@ error.cause // Cause of the error (if it was the result of a exception)
 | ERR_STAT_NOFILE | When the path points to something else but a file |
 | ERR_LOAD | When an exception is thrown during loading of the file |
 | ERR_FUNCTION_WRONG | When the module exports something else but a function |
-| FUNCTION_ARG_WRONG | When the method contains arguments that are not of the requested amount (Note: error contains additional properties: `expected` and `actual`) |
+| ERR_FUNCTION_ARG_WRONG | When the method contains arguments that are not of the requested amount (Note: error contains additional properties: `expected` and `actual`) |
 | ERR_RUN_SYNC | When an exception was thrown in the module directly in the default scope |
 | ERR_RUN_ASYNC | When the module's method returned with an error value |
 | ERR_RUN_UNHANDLED | When the module's method throws an error outside of the default scope |
