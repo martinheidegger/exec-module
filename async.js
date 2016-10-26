@@ -10,7 +10,7 @@ module.exports = function (file, opt, callback) {
   if (typeof opt !== 'object') {
     throw new Error('Option needs to be an object.')
   }
-  if (typeof file !== 'string' && !/^\s*$/.test(file)) {
+  if (typeof file !== 'string' || /^\s*$/.test(file)) {
     throw new Error('File needs to be pointing somewhere.')
   }
   var tearDown = function (err, data) {
@@ -34,9 +34,6 @@ module.exports = function (file, opt, callback) {
     } catch (reqErr) {
       return callback(createErrorTemplate(file, 'LOAD', 'Error while loading file', reqErr))
     }
-    if (mod === null || mod === undefined) {
-      return tearDown(createErrorTemplate(file, 'FUNCTION_MISSING', 'Function required.'))
-    }
     if (typeof mod !== 'function') {
       return tearDown(createErrorTemplate(file, 'FUNCTION_WRONG', 'Function needs to be a function.'))
     }
@@ -46,20 +43,16 @@ module.exports = function (file, opt, callback) {
       argErr.actual = mod.length
       return tearDown(argErr)
     }
-    try {
-      execAsync({
-        name: 'run',
-        run: opt.exec || function (opt, file, mod, callback) {
-          mod(callback)
-        },
-        args: [opt, file, mod],
-        file: file,
-        timeout: opt.timeout,
-        then: tearDown
-      })
-    } catch (e) {
-      tearDown(e)
-    }
+    execAsync({
+      name: 'run',
+      run: opt.exec || function (opt, file, mod, callback) {
+        mod(callback)
+      },
+      args: [opt, file, mod],
+      file: file,
+      timeout: opt.timeout,
+      then: tearDown
+    })
   }
 
   execAsync({

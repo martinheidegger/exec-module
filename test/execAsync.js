@@ -87,6 +87,24 @@ test('timeout exception', function (t) {
   })
 })
 
+test('allow exception to contain a coded error', function (t) {
+  execAsync({
+    run: function () {
+      var err = new Error('Hello')
+      err.code = 'MY_ERR'
+      throw err
+    },
+    name: 'f',
+    file: 'u',
+    then: function (err, result) {
+      t.equal(err.message, 'Error while running f: Hello')
+      t.equal(err.code, 'MY_ERR')
+      t.equal(err.file, 'u')
+      t.done()
+    }
+  })
+})
+
 test('timeout not occuring', function (t) {
   execAsync({
     run: function (cb) {

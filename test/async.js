@@ -14,6 +14,7 @@ test('Error due to file being null', function (t) {
       t.fail('Arrived at unexpected block')
     })
   } catch (e) {
+    t.equal(e.message, 'Option needs to be an object.')
     return t.done()
   }
   t.fail('No Error thrown with string as options')
@@ -21,10 +22,11 @@ test('Error due to file being null', function (t) {
 
 test('Error due to file being an empty string', function (t) {
   try {
-    execModule(null, ' ', function () {
+    execModule(' ', function () {
       t.fail('Arrived at unexpected block')
     })
   } catch (e) {
+    t.equal(e.message, 'File needs to be pointing somewhere.')
     return t.done()
   }
   t.fail('No Error thrown with string as options')
@@ -34,6 +36,14 @@ test('Error with an empty module', function (t) {
   execModule(files.empty_module, function (err) {
     t.equal(err.code, 'ERR_FUNCTION_WRONG')
     t.equal(err.file, files.empty_module)
+    t.done()
+  })
+})
+
+test('Error with a string module', function (t) {
+  execModule(files.string, function (err) {
+    t.equal(err.code, 'ERR_FUNCTION_WRONG')
+    t.equal(err.file, files.string)
     t.done()
   })
 })
@@ -200,6 +210,17 @@ test('Error due to options as string', function (t) {
     return t.done()
   }
   t.fail('No Error thrown with string as options')
+})
+
+test('Optional argument count', function (t) {
+  execModule(files.exec_success, {
+    argCount: 2
+  }, function (err, success) {
+    t.equal(err.code, 'ERR_FUNCTION_ARG_WRONG')
+    t.equal(err.expected, 2)
+    t.equal(err.actual, 1)
+    t.done()
+  })
 })
 
 test('Next Error in setUp', function (t) {
