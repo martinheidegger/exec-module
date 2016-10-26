@@ -16,6 +16,15 @@ $ npm i exec-module
 
 ## Usage
 
+### Domains warning
+
+[Domains](https://nodejs.org/api/domain.html) are deprecated in Node.js but 
+since there is no alternative API available yet this project uses domains. It 
+will be updated to whatever alternative will be given by the Node.js project.
+
+There will be a warning shown by Node.js unless you call it with the
+`--no-deprecation` flag.
+
 ### `execModule(filePath, [opts], callback)`
 
 `filePath` needs to point to a javascript file. `callback` receives the error and or result.
