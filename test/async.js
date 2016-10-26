@@ -9,9 +9,9 @@ var files = fs.readdirSync(path.join(__dirname, 'async')).reduce(function (files
 
 var test = require('tap').test
 
-test('Error due to file being null', function (t) {
+test('Error due to wrong options type', function (t) {
   try {
-    execModule(null, 'hi', function () {
+    execModule(null, '', function () {
       t.fail('Arrived at unexpected block')
     })
   } catch (e) {
@@ -23,7 +23,7 @@ test('Error due to file being null', function (t) {
 
 test('Error due to file being an empty string', function (t) {
   try {
-    execModule(' ', function () {
+    execModule(' ', {}, function () {
       t.fail('Arrived at unexpected block')
     })
   } catch (e) {
