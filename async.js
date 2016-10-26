@@ -1,6 +1,7 @@
 'use strict'
 var execAsync = require('./lib/execAsync')
 var createErrorTemplate = require('./lib/createErrorTemplate')
+var fs = require('fs')
 
 module.exports = function (file, opt, callback) {
   if (callback === undefined && typeof opt === 'function') {
@@ -25,9 +26,13 @@ module.exports = function (file, opt, callback) {
       }
     })
   }
-  var run = function (err, result) {
-    if (err) {
-      return callback(err)
+
+  fs.stat(file, function (statErr, stat) {
+    if ((statErr && statErr.code === 'ENOENT') || (stat && !stat.isFile())) {
+      return callback(createErrorTemplate(file, 'STAT_NOFILE', 'File does not exist'))
+    }
+    if (statErr) {
+      return callback(createErrorTemplate(file, 'STAT_ERR', 'Error while looking for stat of file', statErr))
     }
     try {
       var mod = require(file)
@@ -43,25 +48,29 @@ module.exports = function (file, opt, callback) {
       argErr.actual = mod.length
       return tearDown(argErr)
     }
-    execAsync({
-      name: 'run',
+    var run = function (err, result) {
+      if (err) {
+        return callback(err)
+      }
+      execAsync({
+        name: 'run',
         run: opt.exec || function (file, opt, mod, callback) {
-        mod(callback)
-      },
+          mod(callback)
+        },
         args: [file, opt, mod],
-      file: file,
-      timeout: opt.timeout,
-      then: tearDown
-    })
-  }
+        file: file,
+        timeout: opt.timeout,
+        then: tearDown
+      })
+    }
 
-  execAsync({
-    name: 'setUp',
-    run: opt.setUp,
-    allowEmpty: true,
+    execAsync({
+      name: 'setUp',
+      run: opt.setUp,
+      allowEmpty: true,
       args: [file, opt],
-    file: file,
-    then: run
-  })
+      file: file,
+      then: run
+    })
   })
 }

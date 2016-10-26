@@ -33,6 +33,13 @@ test('Error due to file being an empty string', function (t) {
   t.fail('No Error thrown with string as options')
 })
 
+test('Error due to file not existinng', function (t) {
+  execModule(path.join(__dirname, 'async', 'doesnt_exist.js'), function (err) {
+    t.equal(err.code, 'ERR_STAT_NOFILE')
+    t.done()
+  })
+})
+
 test('Error with an empty module', function (t) {
   execModule(files.empty_module, {
     setUp: function () {
