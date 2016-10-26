@@ -131,9 +131,9 @@ error.cause // Cause of the error (if it was the result of a exception)
 | ERR_SETUP_SYNC | When an exception was thrown in `setUp` directly in the default scope |
 | ERR_SETUP_ASYNC | When the `setUp` returned with an error value |
 | ERR_SETUP_UNHANDLED | When the `setUp` throws an error outside of the default scope |
-| ERR_SETUP_SYNC | When an exception was thrown in `tearDown` directly in the default scope |
-| ERR_SETUP_ASYNC | When the `tearDown` returned with an error value |
-| ERR_SETUP_UNHANDLED | When the `tearDown` throws an error outside of the default scope |
+| ERR_TEARDOWN_SYNC | When an exception was thrown in `tearDown` directly in the default scope |
+| ERR_TEARDOWN_ASYNC | When the `tearDown` returned with an error value |
+| ERR_TEARDOWN_UNHANDLED | When the `tearDown` throws an error outside of the default scope |
 
 _Note: If an error is thrown with a `code` property, then it will be 
 re-thrown as-is._
