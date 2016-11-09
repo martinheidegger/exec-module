@@ -43,8 +43,8 @@ module.exports = function (file, opt, callback) {
       } catch (reqErr) {
         return callback(createErrorTemplate(file, 'LOAD', 'Error while loading file', reqErr))
       }
-      if (typeof mod !== 'function') {
-        return callback(createErrorTemplate(file, 'FUNCTION_WRONG', 'Function needs to be a function.'))
+      if (!opt.exec && typeof mod !== 'function') {
+        return callback(createErrorTemplate(file, 'FUNCTION_WRONG', 'Module needs to export a function.'))
       }
       if (opt.argCount !== undefined && mod.length !== opt.argCount) {
         var argErr = createErrorTemplate(file, 'FUNCTION_ARG_WRONG', 'Function argument count mismatch.')
