@@ -1,6 +1,6 @@
 {
   "name": "exec-module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Executes a module safely.",
   "main": "async.js",
   "scripts": {
@@ -12,7 +12,13 @@
     "type": "git",
     "url": "git+https://github.com/martinheidegger/exec-module.git"
   },
-  "keywords": ["test", "testing", "execution", "annonymous", "error"],
+  "keywords": [
+    "test",
+    "testing",
+    "execution",
+    "annonymous",
+    "error"
+  ],
   "author": "Martin Heidegger <martin.heidegger@gmail.com>",
   "license": "ISC",
   "bugs": {
