@@ -4,7 +4,7 @@
   "description": "Executes a module safely.",
   "main": "async.js",
   "scripts": {
-    "test": "standard && tap --node-arg=\"--no-deprecation\" test/*.js",
+    "test": "standard && tap --node-arg=\"--no-deprecation\" --coverage test/*.js",
     "quick": "tap --node-arg=\"--no-deprecation\" test/*.js",
     "lint": "standard"
   },

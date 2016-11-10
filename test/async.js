@@ -95,7 +95,7 @@ test('Error while initing module', function (t) {
     }
   }, function (err) {
     t.equal(err.code, 'ERR_LOAD')
-    t.equal(err.cause, 'custom error')
+    t.equal(err.message, 'custom error')
     t.done()
   })
 })
@@ -103,7 +103,7 @@ test('Error while initing module', function (t) {
 test('Error while execution', function (t) {
   execModule(files.exec_error, function (err) {
     t.equal(err.code, 'ERR_RUN_UNHANDLED')
-    t.equal(err.cause, 'exec error')
+    t.equal(err.message, 'exec error')
     t.done()
   })
 })
@@ -118,7 +118,7 @@ test('Error while exectuion after next tick', function (t) {
 test('Error at callback', function (t) {
   execModule(files.exec_async_error, function (err) {
     t.equal(err.code, 'ERR_RUN_ASYNC')
-    t.equal(err.cause, 'exec error')
+    t.equal(err.message, 'exec error')
     t.done()
   })
 })
@@ -172,7 +172,7 @@ test('Async Error in setUp', function (t) {
     }
   }, function (err, success) {
     t.equal(err.code, 'ERR_SETUP_ASYNC')
-    t.equal(err.cause, 'custom error2')
+    t.equal(err.message, 'custom error2')
     t.done()
   })
 })
@@ -229,7 +229,7 @@ test('Error in setUp', function (t) {
     }
   }, function (err, success) {
     t.equal(err.code, 'ERR_SETUP_SYNC')
-    t.equal(err.cause, 'custom error')
+    t.equal(err.message, 'custom error')
     t.done()
   })
 })
@@ -243,7 +243,7 @@ test('Next Error in setUp', function (t) {
     }
   }, function (err, success) {
     t.equal(err.code, 'ERR_SETUP_UNHANDLED')
-    t.equal(err.cause, 'custom error3')
+    t.equal(err.message, 'custom error3')
     t.done()
   })
 })
@@ -255,7 +255,7 @@ test('Error in tearDown', function (t) {
     }
   }, function (err, success) {
     t.equal(err.code, 'ERR_TEARDOWN_SYNC')
-    t.equal(err.cause, 'custom tear error')
+    t.equal(err.message, 'custom tear error')
     t.done()
   })
 })
@@ -263,7 +263,7 @@ test('Error in tearDown', function (t) {
 test('Error after immediate call while execution', function (t) {
   execModule(files.exec_error_next, function (err) {
     t.equal(err.code, 'ERR_RUN_UNHANDLED')
-    t.equal(err.cause, 'exec error')
+    t.equal(err.message, 'exec error')
     t.done()
   })
 })
@@ -305,7 +305,7 @@ test('Next Error in setUp', function (t) {
     }
   }, function (err, success) {
     t.equal(err.code, 'ERR_SETUP_UNHANDLED')
-    t.equal(err.cause, 'custom error3')
+    t.equal(err.message, 'custom error3')
     t.done()
   })
 })
